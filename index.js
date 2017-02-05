@@ -7,7 +7,7 @@ var xhr = require('superagent');
 var rmdir = require('rmdir');
 
 var WIDGET_DEPLOY_URL = 'https://alpha.singular.live/widgets/deploy';
-var APP_DEPLOY_URL = 'https://alpha.singular.live/widgets/deploy';
+var APP_DEPLOY_URL = 'https://alpha.singular.live/apptemplates/deploy';
 //deployUrl = 'http://localhost:3000/widgets/deploy';
 
 // Get user arguments
@@ -195,7 +195,7 @@ if (command.toLowerCase() == 'createwidget') {
       console.log('Deploying widget to Singular.Live');
 
       // Upload source folder to Singular.Live
-      var req = xhr.put(deployUrl);
+      var req = xhr.put(WIDGET_DEPLOY_URL);
       req.field('key', configJson.deploykey);
       if (widgetJson) {
         req.field('widgetJson', widgetJson);
@@ -280,7 +280,7 @@ if (command.toLowerCase() == 'createwidget') {
       console.log('Deploying app to Singular.Live');
 
       // Upload source folder to Singular.Live
-      var req = xhr.put(deployUrl);
+      var req = xhr.put(APP_DEPLOY_URL);
       req.field('key', configJson.deploykey)
       req.attach('zipfile', folderPrefix + 'SingularApp.zip');
       req.end(function(err, res) {
