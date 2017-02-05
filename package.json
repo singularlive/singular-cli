@@ -1,0 +1,29 @@
+{
+  "name": "singular-cli",
+  "description": "Create and deploy Singular Widget and Singualr App from command line",
+  "author": "Singular.Live",
+  "main": "index.js",
+  "bin": {
+    "singular": "index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/singularlive/singular-cli/issues"
+  },
+  "dependencies": {
+    "node-zip-dir": "^1.0.2",
+    "rmdir": "^1.2.0",
+    "superagent": "^1.8.3",
+    "superagent-binary-parser": "^1.0.0",
+    "zip-dir": "^1.0.2"
+  },
+  "keywords": [
+    "singular",
+    "singularlive"
+  ],
+  "license": "Apache2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/singularlive/singular-cli"
+  },
+  "version": "0.1.0"
+}
