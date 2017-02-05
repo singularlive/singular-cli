@@ -173,9 +173,9 @@ if (command.toLowerCase() == 'createwidget') {
 
   // Check if there's widget.json
   var widgetJson = null;
-  if (fs.existsSync(folderPrefix + 'source/widget.json')) {
+  if (fs.existsSync(folderPrefix + 'widget.json')) {
     try {
-      widgetJson = fs.readFileSync(folderPrefix + 'source/widget.json', {encoding: 'utf8'});
+      widgetJson = fs.readFileSync(folderPrefix + 'widget.json', {encoding: 'utf8'});
       var validJson = JSON.parse(widgetJson);
     }
     catch (e) {
