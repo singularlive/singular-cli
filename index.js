@@ -6,9 +6,10 @@ var nodeZipDir = require('node-zip-dir');
 var xhr = require('superagent');
 var rmdir = require('rmdir');
 
-var WIDGET_DEPLOY_URL = 'https://alpha.singular.live/widgets/deploy';
-var APP_DEPLOY_URL = 'https://alpha.singular.live/apptemplates/deploy';
-//deployUrl = 'http://localhost:3000/widgets/deploy';
+var WIDGET_DEPLOY_URL = 'https://app.singular.live/widgets/deploy';
+var APP_DEPLOY_URL = 'https://app.singular.live/apptemplates/deploy';
+// var WIDGET_DEPLOY_URL = 'http://localhost:3000/widgets/deploy';
+// var APP_DEPLOY_URL = 'http://localhost:3000/apptemplates/deploy';
 
 // Get user arguments
 var userArgs = process.argv.slice(2);
@@ -202,8 +203,14 @@ if (command.toLowerCase() == 'createwidget') {
       }
       req.attach('zipfile', folderPrefix + 'SingularWidget.zip');
       req.end(function(err, res) {
-        if(err) {
-          console.error(err);
+        if (err) {
+          if(err.response && err.response.error && err.response.error.text) {
+            var errorJson = JSON.parse(err.response.error.text);
+            if (errorJson && errorJson.error && errorJson.error.message) {
+              console.log(errorJson.error.message);
+            }
+          }
+          console.error('Error with status: ' + err.status + '. Please try again later');
         } else {
           console.log('Widget ID: ' + res.body + ' successfully deployed');
         }
@@ -284,8 +291,14 @@ if (command.toLowerCase() == 'createwidget') {
       req.field('key', configJson.deploykey)
       req.attach('zipfile', folderPrefix + 'SingularApp.zip');
       req.end(function(err, res) {
-        if(err) {
-          console.error(err);
+        if (err) {
+          if(err.response && err.response.error && err.response.error.text) {
+            var errorJson = JSON.parse(err.response.error.text);
+            if (errorJson && errorJson.error && errorJson.error.message) {
+              console.log(errorJson.error.message);
+            }
+          }
+          console.error('Error with status: ' + err.status + '. Please try again later');
         } else {
           console.log('App ID: ' + res.body + ' successfully deployed');
         }
