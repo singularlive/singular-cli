@@ -1,5 +1,7 @@
 # App SDK Documentation
 
+Last updated: 2017-06-23
+
 ## Introduction
 
 Welcome to the Singular App SDK documentation. The Singular App SDK works identical to the Singular Widget SDK and provides Java Script libraries to access Singular devices, former web channels, update content and control animations of compositions loaded into this web channels. properties. This document describes the process for developing Singular Apps.
@@ -21,10 +23,7 @@ Following cli’s are available:
 
 | cli | Description |
 |:----|:------------|
-| `singular-cli` (recommended) | Install this cli, if you want to develop Singular Widgets and Singular Apps |
-| `singularwidget-cli` | Install this cli, if you want to develop Singular Widgets only |
-| `singularapp-cli` | Install this cli, if you want to develop Singular Apps only |
-
+| `singular-cli` | Install this cli, if you want to develop Singular Widgets and Singular Apps |
 
 This document describes the installation of the singular-cli. For specific details about the singularwidget-cli or singularapp-cli please refer to [https://github.com/singularlive/](https://github.com/singularlive/) or [https://www.npmjs.com/~singularlive](https://www.npmjs.com/~singularlive). 
 
@@ -57,8 +56,6 @@ Deploy Singular App:
 More information about the Singlar.live cli’s:
 
 - [https://github.com/singularlive/singular-cli](https://github.com/singularlive/singular-cli)
-- [https://github.com/singularlive/singularwidget-cli](https://github.com/singularlive/singularwidget-cli)
-- [https://github.com/singularlive/singularapp-cli ](https://github.com/singularlive/singularapp-cli)
 
 Source code of the widget and App boiler plates:
 
