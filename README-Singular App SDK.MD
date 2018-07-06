@@ -1,10 +1,12 @@
 # App SDK Documentation
 
-Last updated: 2017-06-23
+Last updated: 2018-04-06 (tm)
 
 ## Introduction
 
-Welcome to the Singular App SDK documentation. The Singular App SDK works identical to the Singular Widget SDK and provides Java Script libraries to access Singular devices, former web channels, update content and control animations of compositions loaded into this web channels. properties. This document describes the process for developing Singular Apps.
+Welcome to the Singular App SDK documentation. The Singular App SDK works identical to the Singular Widget SDK and provides JavaScript libraries to access Singular devices, former web channels, update content and control animations of compositions loaded into this web channels. This document describes the process for developing Singular Apps.
+
+Singular Apps use HTML, CSS and JavaScript code. Apps can be simple, e.g. just setting a single line of text, triggering animation or more complex, as e.g. the Singular Studio Control App you allready may know.
 
 If you want to develop Singular Control Widgets, please check out the Singular Widget SDK documentation.
 
@@ -27,13 +29,13 @@ Following cli’s are available:
 
 This document describes the installation of the singular-cli. For specific details about the singularwidget-cli or singularapp-cli please refer to [https://github.com/singularlive/](https://github.com/singularlive/) or [https://www.npmjs.com/~singularlive](https://www.npmjs.com/~singularlive). 
 
-#### Install running the command:
+#### Install the singular-cli by running this command:
 
     npm install singular-cli -g
 
-After the installation of the cli, console commands to create and deploy Singular Widgets and Apps are available.
+After the installing the cli, console commands to create and deploy Singular Widgets and Apps will become available.
 
-The create commands clone the Singular boiler plates into the specified folder.
+The create commands serve to clone the Singular boiler plates into the specified folder.
 
 The deploy commands check, package and upload the widget or App code to Singular.live. Every widget and App is identified by a unique `deploy key`. How to generate a `deploy key`, is covered in the section `Creating a Singular Widget`.
 
@@ -75,7 +77,7 @@ The following steps are required to create a Singular Widget:
 
 ### Creating an App on your local disk
 
-The following commands create a folder on your local disk and download the App source code. We recommend adding this folder to your source code management tool.
+The following commands will create a folder on your local disk and download the App source code. We recommend adding this folder to your source code management tool.
 
 Open a console and type following commands:
 
@@ -88,7 +90,7 @@ Open a console and type following commands:
     C:\Users\tm\Singular Apps\myFirstApp\source\app.html
     C:\Users\tm\Singular Apps\myFirstApp\source\icon.png
 
-This command creates the folder “myFirstApp” and clones the widget boiler plate into this folder.
+This set of commands creates the folder “myFirstApp” and clones the widget boiler plate into this folder.
 
 Description of default files:
 
@@ -100,7 +102,7 @@ Description of default files:
 
 #### Log into Singular.live
 
-To create a App for Singular.live, login with a user that has developer permissions. To check your user permissions, open the “User Administration” of your Singular account.
+To create a App for Singular.live, login with an account that has developer permissions. To check your user permissions, open the “User Administration” of your Singular account.
 
 #### Create App
 
@@ -116,9 +118,9 @@ By using the `Add Output` button, you can select the output(s) for your App.
  
 ### Deploying an App
 
-Copy the `Deploy Key` from the App Details into the `deploykey.json` file. The file should look like this:
+Open the `App Manager` and select your app. Copy the `Deploy Key` from the App Details into the `deploykey.json` file. The file should look like this:
 
-```javascript
+```json
 {
  "deploykey": "uS3bDUabcDnYlAZMO87OL2nBckvSIdmE"
 }
@@ -136,7 +138,10 @@ Upload the App code to Singular using following command in the node.js console:
     
     C:\Users\tm\Singular Apps>
 
-The deploy script reads the `deploy.json` file, exracts the deploy key, creates a zip-file of the App sources and uploads it to Singular.live.
+The deploy script will then read the deploy.json file, exract the deploy key, create a zip-file of the app sources and upload it to the Singular.live cloud. 
+Your app then will be visible in the `App Browser` when creating a new app instance. 
+
+> Activate the `Show Dev Versions` checkbox in the `App Browser` to access the development version of your app.
 
 The status of the `Development` version of your App gets updated every time you deploy new sources for your App. Refresh the `App Manager` and select your App to see and select your App to see the updated status.
  
@@ -155,11 +160,11 @@ The `Publish` function creates an identical copy of the `Development` version of
 
 Apps never get deleted from the Singular.live platform. They are always in one of the following states:
 
-* ***development:*** Every new App starts in the `development` status. Apps under development and only can be accessed by users with development permissions. Once your App is fully developed and tested, you `publish` it, to make it available to other users. Apps in `development` status can be `Published`
+* ***development:*** Every new App starts in the `development` status. Apps under development and  can only be accessed by users with development permissions. Once your App is fully developed and tested, you can `publish` it, to make it available to other users. Apps in `development` status can become `Published`
 
-* ***published:*** A published App is available to all members of your account. Only one `published` versions of a App exists at the same time. By default, always the latest published version will be used when creating an instance of an App. Apps in `published` status can be `Un-published`.
+* ***published:*** A published App is available to all members of your account. Only one `published` version of a App exists at the same time. By default, always the latest published version will be used when creating an instance of an App. Apps in `published` status can be `Un-published`.
 
-* ***archived:*** Apps automatically get archived when a new version is being published. Existing App instances that use an older version of the App still will stay on this version. A standard user can manually `update` the App in the App instance by selecting the `Update` button. Users with developer permissions can in addition select to use any archived version of an App. Apps in `archived` status can be `Published` and `Deprecated`.
+* ***archived:*** Apps automatically get archived when a new version is published. Existing App instances that use an older version of the App still will stay on this older version. A standard user can manually `update` the App in the App instance by selecting the `Update` button. Users with developer permissions can in addition select to use any archived version of an App. Apps in `archived` status can be `Published` and `Deprecated`.
 
 * ***depreciated:*** An App is set to `Deprecate` status, when you want or need to force App instances to use and upgrade to the latest published version of an App. An App in `deprecated` status can be `Archived`.
 
@@ -253,7 +258,7 @@ example message (JSON Object)
 
 ## Sequencer Payload Example
 
-```javascript
+```json
 payload = [{
         "beginTime": 10,
         "endTime": 20,
@@ -289,7 +294,7 @@ Publishing a development version will change its state to Published and it will 
 
 In our example, we will see two versions after we publish our development version: one is development and one is published. 
 
-The singular App deploy command will now upload the source code into version 2, this is the development version, whereas the published version cannot be changed. 
+The Singular App deploy command will now upload the source code into version 2. This is the development version, whereas the published version cannot be changed. 
 
 ### Publish App version 2
 
@@ -301,7 +306,7 @@ Publishing new version of an App does not change existing compositions. This wil
 
 If you want to upgrade Apps in a composition you can do that in the App info editor in the lower left corner of the composition editor.
 
-An archived version change be changed into a deprecated version. Whenever Singular loads a composition and detects that a deprecated version of an App is used it will automatically upgrade this App to the latest published version. This is useful when a published version of an App turns out to be broken and unusable. Fix the problem by uploading new code, publish that code and deprecate the broken version. 
+An archived version can be changed into a deprecated version. Whenever Singular loads a composition and detects that a deprecated version of an App is used it will automatically upgrade this App to the latest published version. This is useful when a published version of an App turns out to be broken and unusable. Fix the problem by uploading new code, publish that code and deprecate the broken version. 
 
 ## Getting Help
 
@@ -317,6 +322,4 @@ Please contact our helpdesk, customers’ success or support team:
 - for support please contact: [support@singular.live](mailto:support@singular.live)
 - for sales please contact: [sales@singular.live](mailto:sales@singular.live)
 - for general information: [info@singular.live](mailto:info@singular.live)
-
-
 

@@ -1,10 +1,12 @@
 # Widget SDK Documentation
 
-Last updated: 2017-06-23
+Last updated: 2018-04-06 (tm)
 
 ## Introduction
 
-Welcome to the Singular Widget SDK documentation. The Singular Widget SDK provides Java Script libraries to access composition properties, control and data structures. This document describes the process for developing Singular Widgets.
+Welcome to the Singular Widget SDK documentation. The Singular Widget SDK provides JavaScript libraries to access composition properties, control and data structures. This document describes the process for developing Singular Widgets.
+
+Singular Widgets use HTML, CSS and JavaScript code. Widgets can be simple, e.g. just drawing a line or more complex, e.g. connecting to a server, fetching latest data and updating other widget's properties.
 
 If you want to develop Singular Control Apps, please check out the Singular App SDK documentation.
 
@@ -17,7 +19,7 @@ This documentation is open source. If you’ve found any errors, typos or would 
 The Singular Widget SDK requires a local installation of node.js. You can find the latest documentation on node.js and download it from [https://nodejs.org/en/](https://nodejs.org/en/).
 
 ### Installation of the Singular-cli
-After the installation of node.js, open the console and install the latest Singular-cli. 
+After the installation of node.js, open a Windows command console and install the latest Singular-cli. 
 
 Following cli’s are available:
 
@@ -27,13 +29,13 @@ Following cli’s are available:
 
 This document describes the installation of the singular-cli. For specific details about the singularwidget-cli or singularapp-cli please refer to [https://github.com/singularlive/](https://github.com/singularlive/) or [https://www.npmjs.com/~singularlive](https://www.npmjs.com/~singularlive). 
 
-#### Install running the command:
+#### Install the singular-cli by running this command:
 
     npm install singular-cli -g
 
-After the installation of the cli, console commands to create and deploy Singular Widgets and Apps are available.
+After installing the cli, console commands to create and deploy Singular Widgets and Apps will become available.
 
-The create commands clone the Singular boiler plates into the specified folder.
+The create commands serve to clone the Singular boiler plates into the specified folder.
 
 The deploy commands check, package and upload the widget or app code to Singular.live. Every widget and app is identified by a unique `deploy key`. How to generate a `deploy key`, is covered in the section `Creating a Singular Widget`.
 
@@ -74,7 +76,7 @@ The following steps are required to create a Singular Widget:
 
 ### Creating a widget on your local disk
 
-The following commands create a folder on your local disk and download the widget source code. We recommend adding this folder to your source code management tool.
+The following commands will create a folder on your local disk and download the widget source code. We recommend adding this folder to your source code management tool.
 
 Open a console and type following commands:
 
@@ -99,7 +101,7 @@ Description of default files:
 
 #### Log into Singular.live
 
-To create a widget for Singular.live, login with a user that has developer permissions. To check your user permissions, open the “User Administration” of your Singular account.
+To create a widget for Singular.live, login with an account that has developer permissions. To check your user permissions, open the “User Administration” of your Singular account.
 
 #### Create Widget
 
@@ -109,13 +111,13 @@ Create a new widget by clicking the `New Widget` button. Enter a name and a cate
 
 #### Enable your widget for custom state animation handling
 
-If you develop custom in- and out-animations for your widget, you need to enable the `Custom State Animation` checkbox in the Widget Manager. This will allow your widget to receive state animation callbacks. for details please refer to `WIDGET SDK FUNCTIONS`.
+If you develop custom in- and out-animations for your widget, you need to enable the `Custom State Animation` checkbox in the Widget Manager. This will allow your widget to receive state animation callbacks. For details please refer to `WIDGET SDK FUNCTIONS`.
  
 This activates the `Widget` effect in the animation menu.
  
 ### Deploying a widget
 
-Copy the `Deploy Key` from the Widget Details into the `deploykey.json` file. The file should look like this:
+Open the `Widget Manager` and select your widget. Copy the `Deploy Key` from the Widget Details into the `deploykey.json` file. The file should look like this:
 
 ```javascript
 {
@@ -135,7 +137,10 @@ Upload the Widget code to Singular using following command in the node.js consol
     
     C:\Users\tm\Singular Widgets>
 
-The deploy script reads the deploy.json file, exracts the deploy key, creates a zip-file of the widget sources and uploads it to Singular.live.
+The deploy script will then read the deploy.json file, exract the deploy key, create a zip-file of the widget sources and upload it to the Singular.live cloud. 
+Your widget then will be visible in the `Widget Browser`. 
+
+> Activate the `Show Dev Versions` checkbox in the `Widget Browser` to access the development version of your widget.
 
 The status of the `Development` version of your widget gets updated every time you deploy new sources for your widget. Refresh the Widget Manager and select your widget to see and select your Widget to see the updated status.
  
@@ -143,8 +148,8 @@ The status of the `Development` version of your widget gets updated every time y
 
 To test your widget, follow these steps:
 
-- open the Singular composition editor
-- to add your widget to the composition, open the widget browser by clicking `Add` -> `Widget`
+- Open the Singular composition editor
+- To add your widget to the composition, open the widget browser by clicking `Add` -> `Widget`
 - Make sure to activate the `Show Dev Versions` checkbox to see all development versions of widgets.
 - Select your widget to add it to the Singular composition tree
 - Use the browsers built in capabilities for debugging and optimizing your widget.
@@ -157,13 +162,13 @@ The `Publish` function creates an identical copy of the `Development` version of
  
 Widgets never get deleted from the Singular.live platform. They are always in one of the following states:
 
-* ***development:*** Every new widget starts in the `development` status. Widget under development and only can be accessed by users with development permissions. Once your widget is fully developed and tested, you `publish` it, to make it available to other users. Widgets in “development” status can be `Published`
+* ***development:*** Every new widget starts in the `development` status. Widgets under development and can only be accessed by users with development permissions. Once your widget is fully developed and tested, you can `publish` it, to make it available to other users. Widgets in “development” status can get `Published`
 
-* ***published:*** A published Widget is available to all members of your account. Only one `published` versions of a widget exists at the same time. By default, always the latest published version will be used when a widget is added to a composition. Widgets in `published` status can be `Un-published`.
+* ***published:*** A published Widget is available to all members of your account. Only one `published` version of a widget exists at the same time. By default, always the latest published version will be used when a widget is added to a composition. Widgets in `published` status can be `Un-published`.
 
-* ***archived:*** Widgets automatically get archived when a new version is being published. Existing compositions that use an older version of the widget still will stay on this version. A standard user can manually `update` the widget in the composition by selecting the `Update` button. Users with developer permissions can in addition select to use any archived version of a widget. Widgets in `archived` status can be `Published` and `Deprecated`.
+* ***archived:*** Widgets automatically get archived when a new version is published. Existing compositions that use an older version of the widget still will stay on this older version. A standard user can manually `update` the widget in the composition by selecting the `Update` button. Users with developer permissions can in addition select to use any archived version of a widget. Widgets in `archived` status can be `Published` and `Deprecated`.
 
-* ***depreciated:*** A widget is set to `Deprecate` status, when you want or need to force compositions to use and upgrade to the latest published version of a widget. A Widgets in `deprecated` status can be `Archived`.
+* ***deprecated:*** A widget is set to `Deprecate` status, when you want or need to force compositions to use and upgrade to the latest published version of a widget. A Widgets in `deprecated` status can be `Archived`.
 
 #### Overview of widget statuses:
 
@@ -177,9 +182,9 @@ Widgets never get deleted from the Singular.live platform. They are always in on
 
 ## Widget UI Definition
 
-The widget UI is defined by a JSON structure. Singular creates the user interface for the widget based on this structure.
+The widget UI is defined by a JSON structure. Singular creates the user interface for all widgets based on this structure.
 
-The structure is an object with one member called `model`. The `model` has two members, `fields` and `groups` which are defined as arrays. The definition of `fields` is required, the definition of `groups` is optional.
+The structure is an object with one member called the `model`. The `model` has two members, `fields` and `groups`, which are defined as arrays. The definition of `fields` is required, the definition of `groups` is optional.
 
 ```javascript
 {
@@ -250,7 +255,7 @@ The JSON structure above creates a text field for a widget. The following sectio
 
 Define a field showing percentage values between 0 and 100:
 
-```javascript
+```json
 {
     "model": {
         "fields": [{
@@ -271,7 +276,7 @@ Define a field showing percentage values between 0 and 100:
 
 Define a selection field:
 
-```javascript
+```json
 {
     "model": {
         "fields": [{
@@ -305,11 +310,11 @@ Define a selection field:
 
 ### Grouping UI Fields
 
-Use groups to logically combine UI fields into on UI panel. The groups item is an array of group objects.
+Use groups to logically combine UI fields into one UI panel. The groups item is an array of group objects.
 
 Structure of the group object:
 
-```javascript
+```json
 {
     "model": {
         "fields": [
@@ -346,13 +351,13 @@ The following table describes in the available group properties.
 | activeID | string | “useTheGroup” | the ID of a `checkbox` field that will be shown n the header of the panel. |
 |  |  |  | NOTE: The `checkbox` field has to be defined as part of the `fields` array before it is attached to a group using the `activeID` definition! |
 
-Fields that are not explicitly assigned to a group, are automatically group in the `Miscellaneous` group panel. The `Miscellaneous` group panel will be hidden if all UI fields are assigned to groups.
+Fields that are not explicitly assigned to a group, are automatically grouped in the `Miscellaneous` group panel. The `Miscellaneous` group panel will be hidden if all UI fields are assigned to groups and it is empty.
 
 The state of the `activeID` property of a group panel enables and disables all the fields in a group. E.g. you defined a UI field of the type `checkbox` with the ID `useTitle` and assigned it to a group called `Shadow` using `activeID`: `useTitle`. The checkbox will be shown in the upper right corner of the group. Depending on the state of the `useTitle` checkbox, all shadow properties like `theTitle`, `theSubtitle`, etc, that belong to this group are enabled or disabled.
 
 Please refer to the following example.
 
-```javasrcipt
+```json
 {
     "model": {
         "fields": [{
@@ -415,31 +420,26 @@ This call will tell Singular which functions to call in your widget.
 
 * ***onValue(json):*** This function is called when an instance of a widget is created or the instance data is changed. The instance data structure is defined with the UI Definition JSON in the widget manager in Singular. 
 
-* ***onButtonClicked(buttonID):*** If you widget has push buttons this function is called when one is clicked.
+* ***onButtonClicked(buttonID):*** If your widget has push buttons, this function is called when one is clicked.
 
-* ***onEditComp(fieldID):*** Is called when the sub composition of a widget is edited. The fieldID tells you which composition field is being edited. Sub composition in widgets are quite complex and will be explained in the next section.
+* ***onEditComp(fieldID):*** This function is called when the subcomposition of a widget is edited. The fieldID tells you which composition field is being edited. Subcompositions in widgets are quite complex and will be explained in the next section.
 
-* ***onAnimation(msg):*** Is called when animation events occurred.
+* ***onAnimation(msg):*** This function is called when animation events occur.
 
 Description of `msg` parameters:
 
-parameter	value	example	description
-msg.event	“init”	“event”:”init” 	init is called when animation is set up
-	“seek”
-	“event”:”seek”	seek is called when the user moves the animation timeline in the editor
-	“start”	“event”:”start”
-	start is called when the animation is playing and the timeline reaches the beginning of the animation.
-	“stop”	“event”:”stop”	stop is called when the animation is paying and the timeline reaches the ending of the animation
-msg.timeline	“In”	"timeline":"In"	timeline to “In” state
-	“Out”	"timeline":"Out"	timeline to “Out” state
-msg.duration	0.5	"duration":0.5	duration of the animation to 0.5 seconds
-msg.time	0.005	“time":0.005	current time from the beginning of the animation
-msg.direction	“forward”	"direction":"forward"
-	run animation forward:
-animation is playing from stage “Out1” to “In” or “In” to “Out2”
-	“backward”	"direction":"backward"
-	run animation backward: 
-animation is playing from stage “Out2” to “In” or “In” to “Out1”
+| parameter     | value      | example          | description |
+|---------------|:----------:|------------------|-------------|
+|  msg.event    | `init`     | "event":"init"   | init is called when animation is set up
+|               | `seek`     | "event":"seek"   | seek is called when the user moves the animation timeline in the editor |
+|               | `start`    | "event":"start"  | start is called when the animation is playing and the timeline reaches the beginning of the animation. |
+|               | `stop`     | "event":"stop"   | stop is called when the animation is paying and the timeline reaches the ending of the animation |
+| msg.timeline  | `In`       | "timeline":"In"  | timeline to `In` state |
+|               | `Out`      | "timeline":"Out" | timeline to `Out` state |
+| msg.duration  | 0.5        | "duration":0.5   | duration of the animation to 0.5 seconds |
+| msg.time      | 0.005      | "time":0.005     | current time from the beginning of the animation |
+| msg.direction | `forward`  | "direction":"forward"  | run animation forward: animation is playing from stage `Out1` to `In` or `In` to `Out2` |
+|               | `backward` | "direction":"backward" | run animation backward: animation is playing from stage `Out2` to `In` or `In` to `Out1` |
 
 Example of msg param:
 
@@ -453,7 +453,7 @@ Example of msg param:
  
 ## Composition Instances
 
-in progress
+`documentation available soon`
 
 ## Versioning of Widgets
 
@@ -471,7 +471,7 @@ Publishing a development version will change its state to Published and it will 
 
 In our example, we will see two versions after we publish our development version: one is development and one is published. 
 
-The singular widget deploy command will now upload the source code into version 2, this is the development version, whereas the published version cannot be changed. 
+The Singular widget deploy command will now upload the source code into version 2. This is the development version, whereas the published version cannot be changed. 
 
 ### Publish widget version 2
 
@@ -483,7 +483,7 @@ Publishing new version of a widget does not change existing compositions. This w
 
 If you want to upgrade widgets in a composition you can do that in the widget info editor in the lower left corner of the composition editor.
 
-An archived version change be changed into a deprecated version. Whenever Singular loads a composition and detects that a deprecated version of a widget is used it will automatically upgrade this widget to the latest published version. This is useful when a published version of a widget turns out to be broken and unusable. Fix the problem by uploading new code, publish that code and deprecate the broken version. 
+An archived version can be changed into a deprecated version. Whenever Singular loads a composition and detects that a deprecated version of a widget is used it will automatically upgrade this widget to the latest published version. This is useful when a published version of a widget turns out to be broken and unusable. Fix the problem by uploading new code, publish that code and deprecate the broken version. 
 
 ## Getting Help
 
@@ -499,6 +499,4 @@ Please contact our helpdesk, customers’ success or support team:
 - for support please contact: [support@singular.live](mailto:support@singular.live)
 - for sales please contact: [sales@singular.live](mailto:sales@singular.live)
 - for general information: [info@singular.live](mailto:info@singular.live)
-
-
 
