@@ -361,28 +361,28 @@ Please refer to the following example.
 {
     "model": {
         "fields": [{
-            "id": "theTitle“,
-            "type": "text“,
-            "title“: "Title“,
-            "defaultValue“: "Title Default Text"
+            "id": "theTitle",
+            "type": "text",
+            "title": "Title",
+            "defaultValue": "Title Default Text"
         },{
-            "id“: "theSubtitle“,
-            "type“: "text“,
-            "title“: "Sub Title“,
-            "defaultValue“: "Sub Title Default Text"
+            "id": "theSubtitle",
+            "type": "text",
+            "title": "Sub Title",
+            "defaultValue": "Sub Title Default Text"
         },{
-            "id“: "useTitle“,
-            "type“: "checkbox“,
-            "title“: "Use Title“,
+            "id": "useTitle",
+            "type": "checkbox",
+            "title": "Use Title",
             "defaultValue“: true
         }],
-        "groups“: [
+        "groups": [
             {
-                "id“: "theTitleGroup“,
-                "title“: "Lower Third“,
-                "width“: "double“,
-                "toolTip“: "toolTip for title gourp“,
-                "childIds“: ["theTitlex“, "theSubtitle"]
+                "id": "theTitleGroup",
+                "title": "Lower Third",
+                "width": "double",
+                "toolTip": "toolTip for title gourp",
+                "childIds": ["theTitlex", "theSubtitle"]
             }
 
         ]
