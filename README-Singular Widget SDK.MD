@@ -374,7 +374,7 @@ Please refer to the following example.
             "id": "useTitle",
             "type": "checkbox",
             "title": "Use Title",
-            "defaultValue“: true
+            "defaultValue": true
         }],
         "groups": [
             {
