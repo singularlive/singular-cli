@@ -1,6 +1,6 @@
 # App SDK Documentation
 
-Last updated: 2018-04-06 (tm)
+Last updated: 2018-07-18 (tm)
 
 ## Introduction
 
