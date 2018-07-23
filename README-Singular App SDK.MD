@@ -1,6 +1,6 @@
 # App SDK Documentation
 
-Last updated: 2018-04-06 (tm)
+Last updated: 2018-07-18 (tm)
 
 ## Introduction
 
@@ -17,6 +17,9 @@ This documentation is open source. If you’ve found any errors, typos or would 
 ### Prerequisite
 
 The Singular App SDK requires a local installation of node.js. You can find the latest documentation on node.js and download it from [https://nodejs.org/en/](https://nodejs.org/en/).
+
+> Note:
+We recommend installing node.js version 8.11.3LTS! 
 
 ### Installation of the Singular-cli
 After the installation of node.js, open the console and install the latest Singular-cli. 

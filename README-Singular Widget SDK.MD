@@ -1,6 +1,6 @@
 # Widget SDK Documentation
 
-Last updated: 2018-04-06 (tm)
+Last updated: 2018-07-18 (tm)
 
 ## Introduction
 
@@ -17,6 +17,9 @@ This documentation is open source. If you’ve found any errors, typos or would 
 ### Prerequisite
 
 The Singular Widget SDK requires a local installation of node.js. You can find the latest documentation on node.js and download it from [https://nodejs.org/en/](https://nodejs.org/en/).
+
+> Note:
+We recommend installing node.js version 8.11.3LTS! 
 
 ### Installation of the Singular-cli
 After the installation of node.js, open a Windows command console and install the latest Singular-cli. 
@@ -361,28 +364,28 @@ Please refer to the following example.
 {
     "model": {
         "fields": [{
-            "id": "theTitle“,
-            "type": "text“,
-            "title“: "Title“,
-            "defaultValue“: "Title Default Text"
+            "id": "theTitle",
+            "type": "text",
+            "title": "Title",
+            "defaultValue": "Title Default Text"
         },{
-            "id“: "theSubtitle“,
-            "type“: "text“,
-            "title“: "Sub Title“,
-            "defaultValue“: "Sub Title Default Text"
+            "id": "theSubtitle",
+            "type": "text",
+            "title": "Sub Title",
+            "defaultValue": "Sub Title Default Text"
         },{
-            "id“: "useTitle“,
-            "type“: "checkbox“,
-            "title“: "Use Title“,
-            "defaultValue“: true
+            "id": "useTitle",
+            "type": "checkbox",
+            "title": "Use Title",
+            "defaultValue": true
         }],
-        "groups“: [
+        "groups": [
             {
-                "id“: "theTitleGroup“,
-                "title“: "Lower Third“,
-                "width“: "double“,
-                "toolTip“: "toolTip for title gourp“,
-                "childIds“: ["theTitlex“, "theSubtitle"]
+                "id": "theTitleGroup",
+                "title": "Lower Third",
+                "width": "double",
+                "toolTip": "toolTip for title gourp",
+                "childIds": ["theTitlex", "theSubtitle"]
             }
 
         ]
