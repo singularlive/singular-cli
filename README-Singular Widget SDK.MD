@@ -1,6 +1,6 @@
 # Widget SDK Documentation
 
-Last updated: 2018-07-18 (tm)
+Last updated: 2018-08-08 (tm)
 
 ## Introduction
 
