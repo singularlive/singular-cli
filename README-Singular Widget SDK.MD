@@ -290,19 +290,19 @@ Define a selection field:
             "selections": [
                 {
                     "id": "theDefault",
-                    "type": "Thailand"
+                    "title": "Thailand"
                 },
                 {
                     "id": "theOption1",
-                    "type": "Austria"
+                    "title": "Austria"
                 },
                 {
                     "id": " theOption2",
-                    "type": "Japan"
+                    "title": "Japan"
                 },
                 {
                     "id": " theOption3",
-                    "type": "Thailand"
+                    "title": "Thailand"
                 }
             ]
         }],
