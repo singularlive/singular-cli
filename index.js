@@ -1,19 +1,20 @@
 #! /usr/bin/env node
-
 var fs = require('fs');
 var zipdir = require('zip-dir');
 var nodeZipDir = require('node-zip-dir');
 var xhr = require('superagent');
 var rmdir = require('rmdir');
 
-var WIDGET_DEPLOY_URL = 'https://app.singular.live/widgets/deploy';
-var APP_DEPLOY_URL = 'https://app.singular.live/apptemplates/deploy';
-// var IL_DEPLOY_URL = 'https://app.singular.live/interactives/deploy';
-// var WIDGET_DEPLOY_URL = 'http://localhost:3000/widgets/deploy';
-// var APP_DEPLOY_URL = 'http://localhost:3000/apptemplates/deploy';
+var WIDGET_DEPLOY_URL;
+var APP_DEPLOY_URL;
+var IL_DEPLOY_URL;
 
-//var IL_DEPLOY_URL = 'http://localhost:3000/interactives/deploy';
-var IL_DEPLOY_URL = 'http://alpha.singular.live/interactives/deploy';
+function setDeployUrl(site) {
+  WIDGET_DEPLOY_URL = 'https://' + site + '.singular.live/widgets/deploy';
+  APP_DEPLOY_URL = 'https://' + site + '.singular.live/apptemplates/deploy';
+  IL_DEPLOY_URL = 'https://' + site + '.singular.live/interactives/deploy';
+  //console.log(APP_DEPLOY_URL);
+}
 
 // Get user arguments
 var userArgs = process.argv.slice(2);
@@ -35,7 +36,23 @@ function helpMe() {
 
   console.log('singular deployinteractive <interactive-folder-name> - Deploy Singular Interactive Layer');
 }
-// Shared functions
+
+// Override site if needed
+if (userArgs[2]) {
+  var site = userArgs[2];
+  if (site != 'app' && site != 'beta' && site != 'alpha') {
+    console.log('Unknown site - Please use app, beta or alpha');
+  } else {
+    setDeployUrl(site);
+  }
+} else {
+  setDeployUrl('app');
+}
+
+// For local test
+// var WIDGET_DEPLOY_URL = 'http://localhost:3000/widgets/deploy';
+// var APP_DEPLOY_URL = 'http://localhost:3000/apptemplates/deploy';
+// var IL_DEPLOY_URL = 'http://localhost:3000/interactives/deploy';
 
 // To parse binary data from xhr
 function binaryParser(res, callback) {
@@ -388,6 +405,7 @@ else if (command.toLowerCase() == 'deployinteractive') {
       req.attach('zipfile', folderPrefix + 'SingularInteractive.zip');
       req.end(function(err, res) {
         if (err) {
+          console.log(err);
           if(err.response && err.response.error && err.response.error.text) {
             var errorJson = JSON.parse(err.response.error.text);
             if (errorJson && errorJson.error && errorJson.error.message) {
