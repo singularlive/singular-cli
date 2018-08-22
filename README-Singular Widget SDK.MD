@@ -1,6 +1,6 @@
 # Widget SDK Documentation
 
-Last updated: 2018-07-18 (tm)
+Last updated: 2018-08-08 (tm)
 
 ## Introduction
 
@@ -289,20 +289,16 @@ Define a selection field:
             "defaultValue": "Thailand",
             "selections": [
                 {
-                    "id": "theDefault",
-                    "type": "Thailand"
-                },
-                {
                     "id": "theOption1",
-                    "type": "Austria"
+                    "title": "Thailand"
                 },
                 {
-                    "id": " theOption2",
-                    "type": "Japan"
+                    "id": "theOption2",
+                    "title": "Austria"
                 },
                 {
                     "id": " theOption3",
-                    "type": "Thailand"
+                    "title": "Japan"
                 }
             ]
         }],
