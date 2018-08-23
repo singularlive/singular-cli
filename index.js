@@ -23,10 +23,11 @@ var command = userArgs[0];
 //console.log(userArgs);
 if (!command) {
   helpMe();
+  return;
 }
 
 function helpMe() {
-  console.log('Available commands from singular-cli v0.1.7');
+  console.log('Available commands from singular-cli v0.1.8');
 
   console.log('singular createwidget <widget-name> - Init Singular Widget boiler plate');
   console.log('singular deploywidget <widget-folder-name> - Deploy Singular Widget');
@@ -42,6 +43,7 @@ if (userArgs[2]) {
   var site = userArgs[2];
   if (site != 'app' && site != 'beta' && site != 'alpha') {
     console.log('Unknown site - Please use app, beta or alpha');
+    return;
   } else {
     setDeployUrl(site);
   }
