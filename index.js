@@ -26,7 +26,7 @@ if (!command) {
 }
 
 function helpMe() {
-  console.log('Available commands from singular-cli');
+  console.log('Available commands from singular-cli v0.1.7');
 
   console.log('singular createwidget <widget-name> - Init Singular Widget boiler plate');
   console.log('singular deploywidget <widget-folder-name> - Deploy Singular Widget');
