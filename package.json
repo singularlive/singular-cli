@@ -12,7 +12,7 @@
   "dependencies": {
     "node-zip-dir": "^1.0.2",
     "rmdir": "^1.2.0",
-    "superagent": "^1.8.3",
+    "superagent": "^3.7.0",
     "superagent-binary-parser": "^1.0.0",
     "zip-dir": "^1.0.2"
   },
