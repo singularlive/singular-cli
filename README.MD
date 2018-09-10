@@ -4,7 +4,7 @@ Last updated: 2018-09-09 (tm)
 
 ## Introduction
 
-Welcome to the Singular CLI provides commands to create Singular Widget and App boilerplates and deploy your Widget, App and Interactive Layer code to the Singular platform.
+Welcome to the Singular-cli provides commands to create Singular Widget and App boilerplates and deploy your Widget, App and Interactive Layer code to the Singular platform.
 
 If you want to develop Singular Widgets, Apps and Interactive Layer Scripts, please check out the Singular Develop Docs at [https://developer.singular.live](https://developer.singular.live).
 
@@ -14,7 +14,7 @@ This documentation is open source. If you’ve found any errors, typos or would 
 
 ### Prerequisite
 
-The Singular CLI requires a local installation of node.js. You can find the latest documentation on node.js and download it from [https://nodejs.org/en/](https://nodejs.org/en/).
+The Singular-cli requires a local installation of node.js. You can find the latest documentation on node.js and download it from [https://nodejs.org/en/](https://nodejs.org/en/).
 
 > Note:
 We recommend installing node.js version 8.11.3LTS! 
