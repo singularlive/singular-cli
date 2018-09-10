@@ -1,4 +1,4 @@
-# Singular CLI Documentation
+# Singular-cli Documentation
 
 Last updated: 2018-09-09 (tm)
 
