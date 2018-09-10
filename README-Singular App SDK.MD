@@ -12,7 +12,7 @@ If you want to develop Singular Control Widgets, please check out the Singular W
 
 This documentation is open source. If you’ve found any errors, typos or would like to improve this document, feel free to send us requests and comments to [sdk@singular.live](mailto:sdk@singular.live).
 
-## Setting up you Environment
+## Setting up your Environment
 
 ### Prerequisite
 
