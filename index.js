@@ -38,6 +38,21 @@ function helpMe() {
   console.log('singular deployinteractive <interactive-folder-name> - Deploy Singular Interactive Layer');
 }
 
+function showReqError(err) {
+  if (err.status == '404') {
+    console.log('Error: Invalid deploy key');
+  } else {
+    console.log(err);
+    if(err.response && err.response.error && err.response.error.text) {
+      var errorJson = JSON.parse(err.response.error.text);
+      if (errorJson && errorJson.error && errorJson.error.message) {
+        console.log(errorJson.error.message);
+      }
+    }
+    console.error('Error with status: ' + err.status + '. Please try again later');
+  }
+}
+
 // Override site if needed
 if (userArgs[2]) {
   var site = userArgs[2];
@@ -231,13 +246,7 @@ if (command.toLowerCase() == 'createwidget') {
       req.attach('zipfile', folderPrefix + 'SingularWidget.zip');
       req.end(function(err, res) {
         if (err) {
-          if(err.response && err.response.error && err.response.error.text) {
-            var errorJson = JSON.parse(err.response.error.text);
-            if (errorJson && errorJson.error && errorJson.error.message) {
-              console.log(errorJson.error.message);
-            }
-          }
-          console.error('Error with status: ' + err.status + '. Please try again later');
+          showReqError(err);
         } else {
           console.log('Widget ID: ' + res.body + ' successfully deployed');
         }
@@ -319,13 +328,7 @@ if (command.toLowerCase() == 'createwidget') {
       req.attach('zipfile', folderPrefix + 'SingularApp.zip');
       req.end(function(err, res) {
         if (err) {
-          if(err.response && err.response.error && err.response.error.text) {
-            var errorJson = JSON.parse(err.response.error.text);
-            if (errorJson && errorJson.error && errorJson.error.message) {
-              console.log(errorJson.error.message);
-            }
-          }
-          console.error('Error with status: ' + err.status + '. Please try again later');
+          showReqError(err);
         } else {
           console.log('App ID: ' + res.body + ' successfully deployed');
         }
@@ -407,14 +410,7 @@ else if (command.toLowerCase() == 'deployinteractive') {
       req.attach('zipfile', folderPrefix + 'SingularInteractive.zip');
       req.end(function(err, res) {
         if (err) {
-          console.log(err);
-          if(err.response && err.response.error && err.response.error.text) {
-            var errorJson = JSON.parse(err.response.error.text);
-            if (errorJson && errorJson.error && errorJson.error.message) {
-              console.log(errorJson.error.message);
-            }
-          }
-          console.error('Error with status: ' + err.status + '. Please try again later');
+          showReqError(err);
         } else {
           console.log('Interactive Layer ID: ' + res.body + ' successfully deployed');
         }
