@@ -5,6 +5,8 @@ var nodeZipDir = require('node-zip-dir');
 var xhr = require('superagent');
 var rmdir = require('rmdir');
 
+var CLI_VERSION = '0.2.3';
+
 var WIDGET_DEPLOY_URL;
 var APP_DEPLOY_URL;
 var IL_DEPLOY_URL;
@@ -27,7 +29,7 @@ if (!command) {
 }
 
 function helpMe() {
-  console.log('Available commands from singular-cli v0.2.2');
+  console.log('Available commands from singular-cli v' + CLI_VERSION);
 
   console.log('singular createwidget <widget-name> - Init Singular Widget boiler plate');
   console.log('singular deploywidget <widget-folder-name> - Deploy Singular Widget');
