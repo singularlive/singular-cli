@@ -27,7 +27,7 @@ if (!command) {
 }
 
 function helpMe() {
-  console.log('Available commands from singular-cli v0.2.0');
+  console.log('Available commands from singular-cli v0.2.2');
 
   console.log('singular createwidget <widget-name> - Init Singular Widget boiler plate');
   console.log('singular deploywidget <widget-folder-name> - Deploy Singular Widget');
@@ -40,6 +40,7 @@ function helpMe() {
 
 function showReqError(err) {
   if (err.status == '404') {
+    console.log(err);
     console.log('Error: Invalid deploy key');
   } else {
     console.log(err);
@@ -104,7 +105,7 @@ function downloadFromGit(folderName, gitFolder, gitUrl, callback) {
         var targetPath = './' + folderName;
 
         fs.renameSync(sourcePath, targetPath);
-        fs.unlink('./boilerplate.zip');
+        fs.unlinkSync('./boilerplate.zip');
 
         rmdir(tempFolderName, function (err, dirs, files) {
           if (err) {
@@ -252,7 +253,7 @@ if (command.toLowerCase() == 'createwidget') {
         }
 
         // Cleanup
-        fs.unlink(folderPrefix + 'SingularWidget.zip');
+        fs.unlinkSync(folderPrefix + 'SingularWidget.zip');
       });
     }
   });
@@ -334,7 +335,7 @@ if (command.toLowerCase() == 'createwidget') {
         }
 
         // Cleanup
-        fs.unlink(folderPrefix + 'SingularApp.zip');
+        fs.unlinkSync(folderPrefix + 'SingularApp.zip');
       });
     }
   });
@@ -416,7 +417,7 @@ else if (command.toLowerCase() == 'deployinteractive') {
         }
 
         // Cleanup
-        fs.unlink(folderPrefix + 'SingularInteractive.zip');
+        fs.unlinkSync(folderPrefix + 'SingularInteractive.zip');
       });
     }
   });
