@@ -5,7 +5,7 @@ var nodeZipDir = require('node-zip-dir');
 var xhr = require('superagent');
 var rmdir = require('rmdir');
 
-var CLI_VERSION = '0.2.5';
+var CLI_VERSION = '0.3.0';
 
 var WIDGET_DEPLOY_URL;
 var APP_DEPLOY_URL;
@@ -67,10 +67,12 @@ if (userArgs[2]) {
   setDeployUrl('app');
 }
 
+//console.log(userArgs);
+
 // For local test
-// var WIDGET_DEPLOY_URL = 'http://localhost:3000/widgets/deploy';
-// var APP_DEPLOY_URL = 'http://localhost:3000/apptemplates/deploy';
-// var IL_DEPLOY_URL = 'http://localhost:3000/interactives/deploy';
+//WIDGET_DEPLOY_URL = 'http://localhost:3000/widgets/deploy';
+//APP_DEPLOY_URL = 'http://localhost:3000/apptemplates/deploy';
+//APP_DEPLOY_URL = 'https://singular-staging4.herokuapp.com/apptemplates/deploy';
 
 // To parse binary data from xhr
 function binaryParser(res, callback) {
@@ -267,13 +269,18 @@ if (command.toLowerCase() == 'createwidget') {
   }
 
   var folderName = userArgs[1];
-  var folderPrefix = './' + folderName + '/';
+  var deployKeyLocation = '';
+  if (folderName.indexOf('deploykey.json') > 0) {
+    deployKeyLocation = folderName; // Full path
+  } else {
+    deployKeyLocation = './' + folderName + '/deploykey.json'; // Default, backward compat
+  }
 
   console.log('-----------------------------------------------');
   console.log('Singular.Live app deploy');
 
   try {
-    var config = fs.readFileSync(folderPrefix + 'deploykey.json', {encoding: 'utf8'});
+    var config = fs.readFileSync(deployKeyLocation, {encoding: 'utf8'});
     var configJson = JSON.parse(config);
     if (!configJson.deploykey) {
       console.error('ERROR: Cannot find deploy key in deploykey.json');
@@ -285,21 +292,28 @@ if (command.toLowerCase() == 'createwidget') {
     return;
   }
 
-  console.log('Validating files in directory "source"');
+  var folderSourcePrefix = '';
+  if (configJson.sourcefolder) {
+    folderSourcePrefix = configJson.sourcefolder;
+  } else {
+    folderSourcePrefix = './' + folderName + '/source';
+  }
+
+  console.log('Validating files in directory "source" (' + folderSourcePrefix + ')');
 
   // Check for output.html and icon.png
   try {
-    var stats = fs.lstatSync(folderPrefix + 'source');
+    var stats = fs.lstatSync(folderSourcePrefix);
 
     if (stats.isDirectory()) {
       try {
-        var outputHtmlFile = fs.lstatSync(folderPrefix + 'source/app.html');
+        var outputHtmlFile = fs.lstatSync(folderSourcePrefix + '/app.html');
       } catch(e) {
         console.error('ERROR: Cannot find file "source/app.html"');
         return;
       }
       try {
-        var iconPngFile = fs.lstatSync(folderPrefix + 'source/icon.png');
+        var iconPngFile = fs.lstatSync(folderSourcePrefix + '/icon.png');
       } catch(e) {
         console.error('ERROR: Cannot find file "source/icon.png"');
         return;
@@ -316,7 +330,7 @@ if (command.toLowerCase() == 'createwidget') {
   // Zip source folder
   console.log('Creating zip file');
 
-  zipdir(folderPrefix + 'source', { saveTo: folderPrefix + 'SingularApp.zip' }, function (err, buffer) {
+  zipdir(folderSourcePrefix, { saveTo: folderSourcePrefix + '/SingularApp.zip' }, function (err, buffer) {
     if (err) {
       console.error('ERROR: Cannot zip directory "source"');
       return;
@@ -326,16 +340,17 @@ if (command.toLowerCase() == 'createwidget') {
       // Upload source folder to Singular.Live
       var req = xhr.put(APP_DEPLOY_URL);
       req.field('key', configJson.deploykey)
-      req.attach('zipfile', folderPrefix + 'SingularApp.zip');
+      req.attach('zipfile', folderSourcePrefix + '/SingularApp.zip');
       req.end(function(err, res) {
         if (err) {
           showReqError(err);
         } else {
+          //console.log(res.body);
           console.log('App ID: ' + res.body + ' successfully deployed');
         }
 
         // Cleanup
-        fs.unlinkSync(folderPrefix + 'SingularApp.zip');
+        fs.unlinkSync(folderSourcePrefix + '/SingularApp.zip');
       });
     }
   });
