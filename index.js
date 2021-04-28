@@ -5,7 +5,7 @@ var nodeZipDir = require('node-zip-dir');
 var xhr = require('superagent');
 var rmdir = require('rmdir');
 
-var CLI_VERSION = '0.3.0';
+var CLI_VERSION = '0.3.1';
 
 var WIDGET_DEPLOY_URL;
 var APP_DEPLOY_URL;
@@ -299,7 +299,7 @@ if (command.toLowerCase() == 'createwidget') {
     folderSourcePrefix = './' + folderName + '/source';
   }
 
-  console.log('Validating files in directory "source" (' + folderSourcePrefix + ')');
+  console.log('Validating files in directory ' + folderSourcePrefix);
 
   // Check for output.html and icon.png
   try {
@@ -309,13 +309,13 @@ if (command.toLowerCase() == 'createwidget') {
       try {
         var outputHtmlFile = fs.lstatSync(folderSourcePrefix + '/app.html');
       } catch(e) {
-        console.error('ERROR: Cannot find file "source/app.html"');
+        console.error('ERROR: Cannot find file "' + folderSourcePrefix + '/app.html"');
         return;
       }
       try {
         var iconPngFile = fs.lstatSync(folderSourcePrefix + '/icon.png');
       } catch(e) {
-        console.error('ERROR: Cannot find file "source/icon.png"');
+        console.error('ERROR: Cannot find file "' + folderSourcePrefix + '/icon.png"');
         return;
       }
     } else {
@@ -323,7 +323,7 @@ if (command.toLowerCase() == 'createwidget') {
       return;
     }
   } catch(e) {
-    console.error('ERROR: Cannot find directory "source"');
+    console.error('ERROR: Cannot find directory ' + folderSourcePrefix);
     return;
   }
 
@@ -332,7 +332,7 @@ if (command.toLowerCase() == 'createwidget') {
 
   zipdir(folderSourcePrefix, { saveTo: folderSourcePrefix + '/SingularApp.zip' }, function (err, buffer) {
     if (err) {
-      console.error('ERROR: Cannot zip directory "source"');
+      console.error('ERROR: Cannot zip directory ' + folderSourcePrefix);
       return;
     } else {
       console.log('Deploying app to Singular.Live');
