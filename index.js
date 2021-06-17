@@ -276,6 +276,8 @@ if (command.toLowerCase() == 'createwidget') {
     deployKeyLocation = './' + folderName + '/deploykey.json'; // Default, backward compat
   }
 
+  var req = xhr.put(APP_DEPLOY_URL);
+
   console.log('-----------------------------------------------');
   console.log('Singular.Live app deploy');
 
@@ -327,6 +329,40 @@ if (command.toLowerCase() == 'createwidget') {
     return;
   }
 
+  // Check API file
+  var apiInfoLoc = './' + folderName + '/api.info';
+  var apiCodeLoc = './' + folderName + '/api.js';
+  var apiJsonLoc = './' + folderName + '/api.json';
+  try {
+    var stats = fs.lstatSync(apiInfoLoc);
+    console.log('INFO: Found api.info');
+
+    req.field('api_info', fs.readFileSync(apiInfoLoc, {encoding: 'utf8'}));
+  } catch (e) {
+    console.log('INFO: api.info not found');
+    req.field('api_info', ' ');
+  }
+
+  try {
+    var stats = fs.lstatSync(apiCodeLoc);
+    console.log('INFO: Found api.js');
+
+    req.field('api_code', fs.readFileSync(apiCodeLoc, {encoding: 'utf8'}));
+  } catch (e) {
+    console.log('INFO: api.js not found');
+    req.field('api_code', ' ');
+  }
+
+  try {
+    var stats = fs.lstatSync(apiJsonLoc);
+    console.log('INFO: Found api.json');
+
+    req.field('api_json', fs.readFileSync(apiJsonLoc, {encoding: 'utf8'}));
+  } catch (e) {
+    console.log('INFO: api.json not found');
+    req.field('api_json', ' ');
+  }
+
   // Zip source folder
   console.log('Creating zip file');
 
@@ -338,15 +374,19 @@ if (command.toLowerCase() == 'createwidget') {
       console.log('Deploying app to Singular.Live');
 
       // Upload source folder to Singular.Live
-      var req = xhr.put(APP_DEPLOY_URL);
-      req.field('key', configJson.deploykey)
+      req.field('key', configJson.deploykey);
       req.attach('zipfile', folderSourcePrefix + '/SingularApp.zip');
       req.end(function(err, res) {
         if (err) {
           showReqError(err);
         } else {
           //console.log(res.body);
-          console.log('App ID: ' + res.body + ' successfully deployed');
+          if (res.body // null and undefined check
+            && Object.keys(res.body).length === 0 && res.body.constructor === Object) {
+            console.log('App successfully deployed');
+          } else {
+            console.log('App ID: ' + res.body + ' successfully deployed');
+          }
         }
 
         // Cleanup
