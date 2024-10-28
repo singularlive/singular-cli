@@ -1,6 +1,6 @@
 # Singular-cli Documentation
 
-Last updated: 2018-09-09 (tm)
+Last updated: Oct.2024 (tm)
 
 ## Introduction
 
@@ -31,7 +31,7 @@ After the installation of the cli, console commands to create and deploy Singula
 
 The create commands serve to clone the Singular boilerplates into the specified folder.
 
-The deploy commands check, package and upload the Widget, App or Interactive Layer Code to the Singular.live platform. Every Widget, App and Interactive Layer Script is identified by a unique `deploy key`. Please refer to the [Singular Knowledge Base](https://singularlive.zendesk.com/hc/en-us/search?utf8=%E2%9C%93&query=deploy+key) for details on how to generate a `deploy key`.
+The deploy commands check, package and upload the Widget or App Code to the Singular.live platform. Every Widget and App is identified by a unique `deploy key`. Please refer to the [Singular Knowledge Base](https://singularlive.zendesk.com/hc/en-us/search?utf8=%E2%9C%93&query=deploy+key) for details on how to generate a `deploy key`.
 
 ### Create Singular Widget boiler plate:
 
@@ -48,10 +48,6 @@ The deploy commands check, package and upload the Widget, App or Interactive Lay
 ### Deploy Singular App:
 
     singular deployapp <app folder name>
-
-### Deploy an Singular Interactive Layer Script
-
-    singular deployinteractive <interactive-folder-name>
 
 ## Getting Help
 
