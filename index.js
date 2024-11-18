@@ -5,7 +5,7 @@ var nodeZipDir = require('node-zip-dir');
 var xhr = require('superagent');
 var rmdir = require('rmdir');
 
-var CLI_VERSION = '0.4.0';
+var CLI_VERSION = '0.8.0';
 
 var WIDGET_DEPLOY_URL;
 var APP_DEPLOY_URL;
