@@ -49,6 +49,10 @@ The deploy commands check, package and upload the Widget or App Code to the Sing
 
     singular deployapp <app folder name>
 
+### Deploy Singular App for test (using deploytestkey.json):
+
+    singular deploytestapp <app folder name>
+
 ## Getting Help
 
 - **Need help**? Ask a question to the [Singular Helpdesk](https://singularlive.zendesk.com/hc/en-us/requests/new).
