@@ -36,14 +36,15 @@ function helpMe() {
 
   console.log('singular createapp <app-name> - Init Singular App boiler plate');
   console.log('singular deployapp <app-folder-name> - Deploy Singular App');
+  console.log('singular deploytestapp <app-folder-name> - Deploy Singular App for test (Deploy from deploytestkey.json)');
 }
 
 function showReqError(err) {
   if (err.status == '404') {
-    console.log(err);
+    //console.log(err);
     console.log('Error: Invalid deploy key');
   } else {
-    console.log(err);
+    //console.log(err);
     if(err.response && err.response.error && err.response.error.text) {
       var errorJson = JSON.parse(err.response.error.text);
       if (errorJson && errorJson.error && errorJson.error.message) {
@@ -260,7 +261,7 @@ if (command.toLowerCase() == 'createwidget') {
     }
   });
 
-} else if (command.toLowerCase() == 'deployapp') {
+} else if (command.toLowerCase() == 'deployapp' || command.toLocaleLowerCase() == 'deploytestapp') {
 
   // Folder name is required
   if (!userArgs[1]) {
@@ -270,16 +271,29 @@ if (command.toLowerCase() == 'createwidget') {
 
   var folderName = userArgs[1];
   var deployKeyLocation = '';
-  if (folderName.indexOf('deploykey.json') > 0) {
-    deployKeyLocation = folderName; // Full path
-  } else {
-    deployKeyLocation = './' + folderName + '/deploykey.json'; // Default, backward compat
+
+  if (command.toLowerCase() == 'deployapp') {
+    if (folderName.indexOf('deploykey.json') > 0) {
+      deployKeyLocation = folderName; // Full path
+    } else {
+      deployKeyLocation = './' + folderName + '/deploykey.json'; // Default, backward compat
+    }
+  } else if (command.toLowerCase() == 'deploytestapp') {
+    if (folderName.indexOf('deploytestkey.json') > 0) {
+      deployKeyLocation = folderName; // Full path
+    } else {
+      deployKeyLocation = './' + folderName + '/deploytestkey.json'; // Default, backward compat
+    }
   }
 
   var req = xhr.put(APP_DEPLOY_URL);
 
   console.log('-----------------------------------------------');
-  console.log('Singular.Live app deploy');
+  if (command.toLowerCase() == 'deployapp') {
+    console.log('Singular.Live Deploy App (deploykey.json)');
+  } else {
+    console.log('Singular.Live Deploy Test App (deploytestkey.json)');
+  }
 
   try {
     var config = fs.readFileSync(deployKeyLocation, {encoding: 'utf8'});
