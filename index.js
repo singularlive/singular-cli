@@ -5,7 +5,7 @@ var nodeZipDir = require('node-zip-dir');
 var xhr = require('superagent');
 var rmdir = require('rmdir');
 
-var CLI_VERSION = '0.9.0';
+var CLI_VERSION = '0.10.0';
 
 var WIDGET_DEPLOY_URL;
 var APP_DEPLOY_URL;
@@ -297,9 +297,9 @@ if (command.toLowerCase() == 'createwidget') {
 
   console.log('-----------------------------------------------');
   if (command.toLowerCase() == 'deployapp') {
-    console.log('Singular.Live Deploy App (deploykey.json)');
+    console.log('Singular.Live Deploy App (deploykey in deploykey.json)');
   } else {
-    console.log('Singular.Live Deploy Test App (deploytestkey.json)');
+    console.log('Singular.Live Deploy Dev App (devdeploykey in deploykey.json)');
   }
 
   try {
@@ -309,15 +309,15 @@ if (command.toLowerCase() == 'createwidget') {
     if (command.toLowerCase() == 'deployapp') {
       deployKey = configJson.deploykey;
 
-      if (!deploykey) {
-        console.error('ERROR: Cannot find deploy key in deploykey.json');
+      if (!deployKey) {
+        console.error('ERROR: Cannot find deploykey in deploykey.json');
         return;
       }
     } else if (command.toLowerCase() == 'deploydevapp') {
       deployKey = configJson.devdeploykey;
 
-      if (!deploykey) {
-        console.error('ERROR: Cannot find devdeploy key in deploykey.json');
+      if (!deployKey) {
+        console.error('ERROR: Cannot find devdeploykey in deploykey.json');
         return;
       }
     }
