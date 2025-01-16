@@ -5,7 +5,7 @@ var nodeZipDir = require('node-zip-dir');
 var xhr = require('superagent');
 var rmdir = require('rmdir');
 
-var CLI_VERSION = '0.8.0';
+var CLI_VERSION = '0.9.0';
 
 var WIDGET_DEPLOY_URL;
 var APP_DEPLOY_URL;
@@ -36,7 +36,7 @@ function helpMe() {
 
   console.log('singular createapp <app-name> - Init Singular App boiler plate');
   console.log('singular deployapp <app-folder-name> - Deploy Singular App');
-  console.log('singular deploytestapp <app-folder-name> - Deploy Singular App for test (Deploy from deploytestkey.json)');
+  console.log('singular deploydevapp <app-folder-name> - Deploy Singular App for dev');
 }
 
 function showReqError(err) {
@@ -261,7 +261,7 @@ if (command.toLowerCase() == 'createwidget') {
     }
   });
 
-} else if (command.toLowerCase() == 'deployapp' || command.toLocaleLowerCase() == 'deploytestapp') {
+} else if (command.toLowerCase() == 'deployapp' || command.toLocaleLowerCase() == 'deploydevapp') {
 
   // Folder name is required
   if (!userArgs[1]) {
@@ -271,19 +271,26 @@ if (command.toLowerCase() == 'createwidget') {
 
   var folderName = userArgs[1];
   var deployKeyLocation = '';
+  var deployKey = null;
 
-  if (command.toLowerCase() == 'deployapp') {
-    if (folderName.indexOf('deploykey.json') > 0) {
-      deployKeyLocation = folderName; // Full path
-    } else {
-      deployKeyLocation = './' + folderName + '/deploykey.json'; // Default, backward compat
-    }
-  } else if (command.toLowerCase() == 'deploytestapp') {
-    if (folderName.indexOf('deploytestkey.json') > 0) {
-      deployKeyLocation = folderName; // Full path
-    } else {
-      deployKeyLocation = './' + folderName + '/deploytestkey.json'; // Default, backward compat
-    }
+  // if (command.toLowerCase() == 'deployapp') {
+  //   if (folderName.indexOf('deploykey.json') > 0) {
+  //     deployKeyLocation = folderName; // Full path
+  //   } else {
+  //     deployKeyLocation = './' + folderName + '/deploykey.json'; // Default, backward compat
+  //   }
+  // } else if (command.toLowerCase() == 'deploydevapp') {
+  //   if (folderName.indexOf('deploytestkey.json') > 0) {
+  //     deployKeyLocation = folderName; // Full path
+  //   } else {
+  //     deployKeyLocation = './' + folderName + '/deploytestkey.json'; // Default, backward compat
+  //   }
+  // }
+
+  if (folderName.indexOf('deploykey.json') > 0) {
+    deployKeyLocation = folderName; // Full path
+  } else {
+    deployKeyLocation = './' + folderName + '/deploykey.json'; // Default, backward compat
   }
 
   var req = xhr.put(APP_DEPLOY_URL);
@@ -298,9 +305,21 @@ if (command.toLowerCase() == 'createwidget') {
   try {
     var config = fs.readFileSync(deployKeyLocation, {encoding: 'utf8'});
     var configJson = JSON.parse(config);
-    if (!configJson.deploykey) {
-      console.error('ERROR: Cannot find deploy key in deploykey.json');
-      return;
+
+    if (command.toLowerCase() == 'deployapp') {
+      deployKey = configJson.deploykey;
+
+      if (!deploykey) {
+        console.error('ERROR: Cannot find deploy key in deploykey.json');
+        return;
+      }
+    } else if (command.toLowerCase() == 'deploydevapp') {
+      deployKey = configJson.devdeploykey;
+
+      if (!deploykey) {
+        console.error('ERROR: Cannot find devdeploy key in deploykey.json');
+        return;
+      }
     }
   }
   catch (e) {
@@ -388,7 +407,7 @@ if (command.toLowerCase() == 'createwidget') {
       console.log('Deploying app to Singular.Live');
 
       // Upload source folder to Singular.Live
-      req.field('key', configJson.deploykey);
+      req.field('key', deployKey);
       req.attach('zipfile', folderSourcePrefix + '/SingularApp.zip');
       req.end(function(err, res) {
         if (err) {
