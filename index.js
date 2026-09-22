@@ -4,8 +4,9 @@ var zipdir = require('zip-dir');
 var nodeZipDir = require('node-zip-dir');
 var xhr = require('superagent');
 var rmdir = require('rmdir');
+var appTemplateFiles = require('./lib/appTemplateFiles');
 
-var CLI_VERSION = '0.10.0';
+var CLI_VERSION = '0.11.0';
 
 var WIDGET_DEPLOY_URL;
 var APP_DEPLOY_URL;
@@ -71,9 +72,9 @@ if (userArgs[2]) {
 //console.log(userArgs);
 
 // For local test
-//WIDGET_DEPLOY_URL = 'http://localhost:3000/widgets/deploy';
-//APP_DEPLOY_URL = 'http://localhost:3000/apptemplates/deploy';
-//APP_DEPLOY_URL = 'https://singular-staging4.herokuapp.com/apptemplates/deploy';
+// WIDGET_DEPLOY_URL = 'http://localhost:3000/widgets/deploy';
+// APP_DEPLOY_URL = 'http://localhost:3000/apptemplates/deploy';
+// IL_DEPLOY_URL = 'http://localhost:3000/interactives/deploy';
 
 // To parse binary data from xhr
 function binaryParser(res, callback) {
@@ -394,6 +395,27 @@ if (command.toLowerCase() == 'createwidget') {
   } catch (e) {
     console.log('INFO: api.json not found');
     req.field('api_json', ' ');
+  }
+
+  // CompositionContract.md is generated only for apps that define a
+  // composition contract. Match its name case-insensitively so uploads work
+  // consistently on case-sensitive and case-insensitive file systems.
+  try {
+    var compositionContractLoc = appTemplateFiles.findFileCaseInsensitive(
+      './' + folderName,
+      'CompositionContract.md'
+    );
+
+    if (!compositionContractLoc) {
+      console.log('INFO: CompositionContract.md not found');
+    } else {
+      console.log('INFO: Found CompositionContract.md');
+
+      req.field('composition_contract', fs.readFileSync(compositionContractLoc, {encoding: 'utf8'}));
+    }
+  } catch (e) {
+    console.log('INFO: CompositionContract.md not found');
+    req.field('composition_contract', ' ');
   }
 
   // Zip source folder

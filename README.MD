@@ -49,6 +49,8 @@ The deploy commands check, package and upload the Widget or App Code to the Sing
 
     singular deployapp <app folder name>
 
+If the app folder contains an optional `CompositionContract.md`, `deployapp` uploads it with the app template metadata. The filename match is case-insensitive, and apps without the file continue to deploy normally.
+
 ### Deploy Singular App for test (using deploytestkey.json):
 
     singular deploytestapp <app folder name>

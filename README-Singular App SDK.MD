@@ -98,6 +98,7 @@ This set of commands creates the folder “myFirstApp” and clones the widget b
 Description of default files:
 
 - `deploykey.json`: File containing the app deploy key.
+- `CompositionContract.md`: Optional generated Markdown contract for the app's composition.
 - `source\app.hml`: app source code
 - `source\icon.png`:  app icon in png format
 
@@ -141,8 +142,8 @@ Upload the App code to Singular using following command in the node.js console:
     
     C:\Users\tm\Singular Apps>
 
-The deploy script will then read the deploy.json file, exract the deploy key, create a zip-file of the app sources and upload it to the Singular.live cloud. 
-Your app then will be visible in the `App Browser` when creating a new app instance. 
+The deploy script will then read the deploy.json file, exract the deploy key, create a zip-file of the app sources and upload it to the Singular.live cloud. If `CompositionContract.md` exists in the app folder, the deploy also uploads its contents. Its filename is matched case-insensitively. The file is optional, so existing apps without it continue to deploy normally.
+Your app then will be visible in the `App Browser` when creating a new app instance.
 
 > Activate the `Show Dev Versions` checkbox in the `App Browser` to access the development version of your app.
 
