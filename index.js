@@ -342,11 +342,14 @@ else {
   helpMe();
 }
 
-// The version folders in an app's versions/ folder, sorted by name.
+// The version folders in an app's versions/ folder, sorted by name. Only a
+// folder with its own deploykey.json is a version, so an app that keeps an
+// unrelated versions/ folder deploys as before.
 function listVersions(versionsDir) {
   if (!fs.existsSync(versionsDir)) return [];
   return fs.readdirSync(versionsDir).filter(function (name) {
-    return fs.statSync(versionsDir + '/' + name).isDirectory();
+    var dir = versionsDir + '/' + name;
+    return fs.statSync(dir).isDirectory() && fs.existsSync(dir + '/deploykey.json');
   }).sort();
 }
 

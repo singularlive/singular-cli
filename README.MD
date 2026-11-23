@@ -66,7 +66,7 @@ Deploy one version, or every version in turn:
     singular deployapp my-app --all-versions
     singular deploydevapp my-app --all-versions beta
 
-`--all-versions` deploys every version even when one fails, then lists the result of each. Without either flag, an app that has a `versions/` folder is not deployed. Running `singular deployapp .` inside a version folder deploys that version as an app without versions.
+`--all-versions` deploys every version even when one fails, then lists the result of each. A folder in `versions/` counts as a version when it has its own `deploykey.json`. Without either flag, an app that has a version is not deployed. Running `singular deployapp .` inside a version folder deploys that version as an app without versions.
 
 ### Deploy Singular App for test (using deploytestkey.json):
 
