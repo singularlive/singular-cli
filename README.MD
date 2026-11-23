@@ -17,13 +17,13 @@ This documentation is open source. If you’ve found any errors, typos or would 
 The Singular-cli requires a local installation of node.js. You can find the latest documentation on node.js and download it from [https://nodejs.org/en/](https://nodejs.org/en/).
 
 > Note:
-We recommend installing node.js version 8.11.3LTS! 
+> We recommend installing node.js version 8.11.3LTS! 
 
 ### Installation of the Singular-cli
 
 After the installation of node.js, open the console and install the latest Singular-cli by running this command:
 
-    npm install singular-cli -g 
+    npm install singular-cli -g
 
 ## Available commands from the singular-cli
 
@@ -51,6 +51,23 @@ The deploy commands check, package and upload the Widget or App Code to the Sing
 
 If the app folder contains an optional `CompositionContract.md`, `deployapp` uploads it with the app template metadata. The filename match is case-insensitive, and apps without the file continue to deploy normally.
 
+### Deploy an app with versions:
+
+An app that serves several compositions can keep one folder per App Manager entry in `versions/<name>/`. Each version folder is laid out like an app without versions: `deploykey.json`, `api.json`, `api.info`, `api.js`, an optional `CompositionContract.md` and its build. A relative `sourcefolder` is read from the version folder.
+
+    my-app/
+      versions/
+        scorebug/      deploykey.json  api.json  api.info  api.js  dist/
+        streampack/    deploykey.json  api.json  api.info  api.js  dist/
+
+Deploy one version, or every version in turn:
+
+    singular deployapp my-app --version=scorebug
+    singular deployapp my-app --all-versions
+    singular deploydevapp my-app --all-versions beta
+
+`--all-versions` deploys every version even when one fails, then lists the result of each. Without either flag, an app that has a `versions/` folder is not deployed. Running `singular deployapp .` inside a version folder deploys that version as an app without versions.
+
 ### Deploy Singular App for test (using deploytestkey.json):
 
     singular deploytestapp <app folder name>
@@ -71,5 +88,3 @@ Please contact our helpdesk, customers’ success or support team:
 
 - Visit us at: [www.singular.live](http://www.singular.live)
 - for support please contact: [support@singular.live](mailto:support@singular.live)
-
-
