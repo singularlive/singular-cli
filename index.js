@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 var fs = require('fs');
+var path = require('path');
 var zipdir = require('zip-dir');
 var nodeZipDir = require('node-zip-dir');
 var xhr = require('superagent');
@@ -124,6 +125,20 @@ function downloadFromGit(folderName, gitFolder, gitUrl, callback) {
       });
     }
   });
+}
+
+// A relative `sourcefolder` is read from the working directory, as before,
+// then from the folder that holds deploykey.json.
+function resolveSourceFolder(sourcefolder, keyFolder) {
+  if (path.isAbsolute(sourcefolder) || fs.existsSync(sourcefolder)) {
+    return sourcefolder;
+  }
+  var fromKeyFolder = path.join(keyFolder, sourcefolder);
+  if (fs.existsSync(fromKeyFolder)) {
+    console.log('INFO: sourcefolder "' + sourcefolder + '" read from ' + keyFolder);
+    return fromKeyFolder;
+  }
+  return sourcefolder;
 }
 
 if (command.toLowerCase() == 'createwidget') {
@@ -330,7 +345,7 @@ if (command.toLowerCase() == 'createwidget') {
 
   var folderSourcePrefix = '';
   if (configJson.sourcefolder) {
-    folderSourcePrefix = configJson.sourcefolder;
+    folderSourcePrefix = resolveSourceFolder(configJson.sourcefolder, path.dirname(deployKeyLocation));
   } else {
     folderSourcePrefix = './' + folderName + '/source';
   }
