@@ -20,8 +20,24 @@ function setDeployUrl(site) {
   //console.log(APP_DEPLOY_URL);
 }
 
-// Get user arguments
-var userArgs = process.argv.slice(2);
+// Get user arguments. `--version=<name>` and `--all-versions` are read apart
+// from the positional arguments, so the site stays the third positional.
+var VERSION_FLAG = '--version=';
+var ALL_VERSIONS_FLAG = '--all-versions';
+var rawArgs = process.argv.slice(2);
+var versionArg = null;
+var allVersions = false;
+var userArgs = rawArgs.filter(function (arg) {
+  if (arg.indexOf(VERSION_FLAG) === 0) {
+    versionArg = arg.slice(VERSION_FLAG.length);
+    return false;
+  }
+  if (arg === ALL_VERSIONS_FLAG) {
+    allVersions = true;
+    return false;
+  }
+  return true;
+});
 var command = userArgs[0];
 
 //console.log(userArgs);
@@ -39,6 +55,8 @@ function helpMe() {
   console.log('singular createapp <app-name> - Init Singular App boiler plate');
   console.log('singular deployapp <app-folder-name> - Deploy Singular App');
   console.log('singular deploydevapp <app-folder-name> - Deploy Singular App for dev');
+  console.log('  --version=<name>  Deploy one version: <app-folder-name>/versions/<name>/');
+  console.log('  --all-versions    Deploy every version in <app-folder-name>/versions/');
 }
 
 function showReqError(err) {
@@ -267,11 +285,81 @@ if (command.toLowerCase() == 'createwidget') {
 
   // Folder name is required
   if (!userArgs[1]) {
-    console.log('Please use singular deployapp <app-name>');
+    console.log('Please use singular deployapp <app-name> [--version=<name> | --all-versions]');
     return;
   }
 
-  var folderName = userArgs[1];
+  var appFolderName = userArgs[1];
+  var versionsDir = './' + appFolderName + '/versions';
+  var versions = listVersions(versionsDir);
+
+  if (versionArg === '') {
+    console.error('ERROR: --version needs a name: --version=<name>');
+    return;
+  }
+  if (versionArg !== null && allVersions) {
+    console.error('ERROR: Use --version or --all-versions, not both');
+    return;
+  }
+  if ((versionArg !== null || allVersions) && !versions.length) {
+    console.error('ERROR: No version folders in ' + versionsDir);
+    return;
+  }
+  if (versionArg !== null && versions.indexOf(versionArg) < 0) {
+    console.error('ERROR: No version "' + versionArg + '" in ' + versionsDir + ' (found: ' + versions.join(', ') + ')');
+    return;
+  }
+  // Without a flag an app with versions would deploy its own folder, which
+  // holds no deploy key or API files of its own.
+  if (versionArg === null && !allVersions && versions.length && appFolderName.indexOf('deploykey.json') < 0) {
+    console.error('ERROR: ' + appFolderName + ' has versions (' + versions.join(', ') + '): ' +
+      'pass --version=<name> or --all-versions');
+    return;
+  }
+
+  var targets = allVersions ? versions : [versionArg];
+
+  // One App Manager entry at a time, so the log of each upload stays readable.
+  // A failed version does not stop the next one.
+  var results = [];
+  var deployNext = function (index) {
+    if (index >= targets.length) {
+      if (targets.length > 1) {
+        console.log('-----------------------------------------------');
+        results.forEach(function (result) {
+          console.log((result.ok ? 'Deployed: ' : 'FAILED:   ') + result.version);
+        });
+      }
+      return;
+    }
+    deployApp(appFolderName, targets[index], function (ok) {
+      results.push({version: targets[index], ok: ok});
+      deployNext(index + 1);
+    });
+  };
+  deployNext(0);
+}
+else {
+  helpMe();
+}
+
+// The version folders in an app's versions/ folder, sorted by name. Only a
+// folder with its own deploykey.json is a version, so an app that keeps an
+// unrelated versions/ folder deploys as before.
+function listVersions(versionsDir) {
+  if (!fs.existsSync(versionsDir)) return [];
+  return fs.readdirSync(versionsDir).filter(function (name) {
+    var dir = versionsDir + '/' + name;
+    return fs.statSync(dir).isDirectory() && fs.existsSync(dir + '/deploykey.json');
+  }).sort();
+}
+
+// Deploys one App Manager entry and calls `done(ok)`. A version is deployed
+// from `<app>/versions/<version>/`, laid out like an app without versions:
+// its deploykey.json, API files and CompositionContract.md, and its
+// `sourcefolder` resolved against that folder.
+function deployApp(appFolderName, version, done) {
+  var folderName = version ? appFolderName + '/versions/' + version : appFolderName;
   var deployKeyLocation = '';
   var deployKey = null;
 
@@ -303,6 +391,9 @@ if (command.toLowerCase() == 'createwidget') {
   } else {
     console.log('Singular.Live Deploy Dev App (devdeploykey in deploykey.json)');
   }
+  if (version) {
+    console.log('Version: ' + version);
+  }
 
   try {
     var config = fs.readFileSync(deployKeyLocation, {encoding: 'utf8'});
@@ -313,20 +404,20 @@ if (command.toLowerCase() == 'createwidget') {
 
       if (!deployKey) {
         console.error('ERROR: Cannot find deploykey in deploykey.json');
-        return;
+        return done(false);
       }
     } else if (command.toLowerCase() == 'deploydevapp') {
       deployKey = configJson.devdeploykey;
 
       if (!deployKey) {
         console.error('ERROR: Cannot find devdeploykey in deploykey.json');
-        return;
+        return done(false);
       }
     }
   }
   catch (e) {
     console.error('ERROR: Cannot access deploykey.json: ' + e);
-    return;
+    return done(false);
   }
 
   var folderSourcePrefix = '';
@@ -350,21 +441,21 @@ if (command.toLowerCase() == 'createwidget') {
         var outputHtmlFile = fs.lstatSync(folderSourcePrefix + '/app.html');
       } catch(e) {
         console.error('ERROR: Cannot find file "' + folderSourcePrefix + '/app.html"');
-        return;
+        return done(false);
       }
       try {
         var iconPngFile = fs.lstatSync(folderSourcePrefix + '/icon.png');
       } catch(e) {
         console.error('ERROR: Cannot find file "' + folderSourcePrefix + '/icon.png"');
-        return;
+        return done(false);
       }
     } else {
       console.error('ERROR: "source" is not a directory');
-      return;
+      return done(false);
     }
   } catch(e) {
     console.error('ERROR: Cannot find directory ' + folderSourcePrefix);
-    return;
+    return done(false);
   }
 
   // Check API file
@@ -428,7 +519,7 @@ if (command.toLowerCase() == 'createwidget') {
   zipdir(folderSourcePrefix, { saveTo: folderSourcePrefix + '/SingularApp.zip' }, function (err, buffer) {
     if (err) {
       console.error('ERROR: Cannot zip directory ' + folderSourcePrefix);
-      return;
+      return done(false);
     } else {
       console.log('Deploying app to Singular.Live');
 
@@ -450,10 +541,9 @@ if (command.toLowerCase() == 'createwidget') {
 
         // Cleanup
         fs.unlinkSync(folderSourcePrefix + '/SingularApp.zip');
+        done(!err);
       });
     }
   });
 }
-else {
-  helpMe();
-}
+
