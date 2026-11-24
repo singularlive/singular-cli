@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 var fs = require('fs');
+var path = require('path');
 var zipdir = require('zip-dir');
 var nodeZipDir = require('node-zip-dir');
 var xhr = require('superagent');
@@ -420,12 +421,11 @@ function deployApp(appFolderName, version, done) {
   }
 
   var folderSourcePrefix = '';
-  if (configJson.sourcefolder && version && configJson.sourcefolder.charAt(0) !== '/') {
-    // A version deploys from the app folder, so its `sourcefolder` is read
-    // from its own folder, as when the CLI runs inside it.
-    folderSourcePrefix = './' + folderName + '/' + configJson.sourcefolder;
-  } else if (configJson.sourcefolder) {
-    folderSourcePrefix = configJson.sourcefolder;
+  if (configJson.sourcefolder) {
+    // A relative path is read from the folder that holds deploykey.json.
+    folderSourcePrefix = path.isAbsolute(configJson.sourcefolder)
+      ? configJson.sourcefolder
+      : './' + path.join(path.dirname(deployKeyLocation), configJson.sourcefolder);
   } else {
     folderSourcePrefix = './' + folderName + '/source';
   }
