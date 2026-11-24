@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 var fs = require('fs');
+var path = require('path');
 var zipdir = require('zip-dir');
 var nodeZipDir = require('node-zip-dir');
 var xhr = require('superagent');
@@ -330,7 +331,10 @@ if (command.toLowerCase() == 'createwidget') {
 
   var folderSourcePrefix = '';
   if (configJson.sourcefolder) {
-    folderSourcePrefix = configJson.sourcefolder;
+    // A relative path is read from the folder that holds deploykey.json.
+    folderSourcePrefix = path.isAbsolute(configJson.sourcefolder)
+      ? configJson.sourcefolder
+      : './' + path.join(path.dirname(deployKeyLocation), configJson.sourcefolder);
   } else {
     folderSourcePrefix = './' + folderName + '/source';
   }
